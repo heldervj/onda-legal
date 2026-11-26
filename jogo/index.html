@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Convite para jogar · ONDA</title>
+<meta name="description" content="Você foi convidado para jogar na ONDA, a rede de fotos, memórias e jogos entre amigos.">
+<meta property="og:title" content="Bora jogar na ONDA?">
+<meta property="og:description" content="Um amigo te chamou para um jogo. Toque para abrir no app.">
+<meta property="og:image" content="https://heldervj.github.io/onda-legal/jogo/img/onda.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/onda.png">
+<style>
+  :root{--bg:#F6F9FD;--card:#fff;--text:#0F172A;--muted:#475569;--primary:#2563EB;--deep:#0B3B8C;--sky:#EAF4FF;--line:#E2E8F0}
+  @media(prefers-color-scheme:dark){:root{--bg:#0B1120;--card:#111a2e;--text:#E2E8F0;--muted:#94A3B8;--sky:#13213d;--line:#1e2a44}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  main{max-width:440px;margin:0 auto;padding:28px 18px 56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.04em;color:var(--primary)}
+  .brand img{width:32px;height:32px;border-radius:8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 20px;margin-top:20px;text-align:center}
+  .game{width:96px;height:96px;border-radius:24px;background:var(--sky)}
+  h1{font-size:1.5rem;margin:14px 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px}
+  .btn{display:block;width:100%;padding:15px 18px;border-radius:999px;background:var(--primary);color:#fff;font-weight:700;font-size:1.05rem;text-decoration:none;border:0}
+  .btn:active{background:var(--deep)}
+  .btn.alt{background:var(--sky);color:var(--primary)}
+  .hint{color:var(--muted);font-size:.9rem;margin:10px 0 0}
+  h2{font-size:1.05rem;margin:28px 0 8px}
+  ol{padding-left:20px;margin:0}
+  li{margin:8px 0}
+  .code{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:1.15rem;letter-spacing:.12em;background:var(--sky);color:var(--primary);padding:4px 10px;border-radius:8px}
+  .stores{display:grid;gap:10px;margin-top:12px}
+  footer{margin-top:36px;font-size:.8rem;color:var(--muted);text-align:center}
+  footer a{color:var(--muted)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand"><img src="img/onda.png" alt="">ONDA</div>
+
+  <section class="card">
+    <img id="game-img" class="game" src="img/onda.png" alt="">
+    <h1 id="title">Bora jogar na ONDA?</h1>
+    <p class="sub" id="sub">Um amigo te chamou para jogar.</p>
+    <a class="btn" id="open" href="onda://jogo">Abrir no app</a>
+    <p class="hint">Já tem a ONDA instalada? Toque acima para ir direto para o jogo.</p>
+  </section>
+
+  <h2>Ainda não tem o app?</h2>
+  <ol>
+    <li>Instale a versão de testes da ONDA no seu celular (links abaixo).</li>
+    <li id="code-step" hidden>Ao criar sua conta, use o código de convite <span class="code" id="code"></span></li>
+    <li>Volte para este link e toque em <b>Abrir no app</b>.</li>
+  </ol>
+  <div class="stores">
+    <a class="btn alt" id="ios" hidden>Instalar no iPhone (TestFlight)</a>
+    <a class="btn alt" id="android" hidden>Instalar no Android (Google Play)</a>
+  </div>
+  <p class="hint" id="ios-note" hidden>No iPhone, primeiro instale o app <b>TestFlight</b> da Apple; o link acima abre o convite da ONDA dentro dele.</p>
+  <p class="hint" id="android-note" hidden>No Android, entre com a mesma conta Google que foi convidada para o teste, aceite o convite e instale pela Play Store.</p>
+  <p class="hint" id="no-link" hidden>A ONDA ainda está em teste fechado. Peça o link de instalação para quem te mandou este convite.</p>
+
+  <footer>
+    ONDA · versão de testes · <a href="../privacidade.html">Privacidade</a> · <a href="../termos.html">Termos</a>
+  </footer>
+</main>
+<script>
+(function () {
+  // Install links for the test builds. Empty = not public yet (the page then asks for the link).
+  var IOS_URL = '';
+  var ANDROID_URL = 'https://play.google.com/apps/testing/com.apponda.socialapp';
+  var PACKAGE = 'com.apponda.socialapp';
+
+  // Keep in sync with GAME_TITLES in apps/mobile/src/lib/game-links.ts.
+  var GAMES = {
+    'torre': ['Torre', 'Empilhe os blocos no tempo certo. Mesmo desafio para todo mundo hoje.', 'torre'],
+    'reflexo': ['Reflexo', 'Três minijogos de reação, atenção e memória em um minuto.', 'reflexo'],
+    'bigbang': ['Big Bang', 'Junte astros iguais e crie planetas, estrelas e até um sol.', 'bigbang'],
+    'drift': ['Drift', 'Segure para derrapar nas curvas. Quanto mais drift, mais pontos.', 'drift'],
+    'fliperama-dia': ['Fliperama do Dia', 'Os quatro desafios do Fliperama num campeonato entre amigos.', 'fliperama-dia'],
+    'quebra-cuca-mosaico': ['Quebra-Cuca Mosaico', 'Um quebra-cabeça de lógica novo por dia.', 'mosaico'],
+    'quebra-cuca-sequencia': ['Quebra-Cuca Sequência', 'Descubra a regra de cada sequência.', 'sequencia'],
+    'onde-fica': ['Onde Fica?', 'Adivinhe onde foram tiradas as fotos dos amigos.', 'onde-fica'],
+    'de-quem-e': ['De Quem É?', 'Adivinhe de quem é a memória e o ano da foto.', 'de-quem-e'],
+    'duelo': ['Duelo', 'Quiz de 5 perguntas contra um amigo, 20 segundos cada.', 'duelo'],
+    'jardim': ['Jardim', 'Plante, colha e visite a fazenda dos amigos.', 'jardim']
+  };
+  var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  var CODE = /^[A-Za-z2-9]{6,10}$/;
+
+  var q = new URLSearchParams(location.search);
+  var g = q.get('g');
+  var game = Object.prototype.hasOwnProperty.call(GAMES, g) ? GAMES[g] : null;
+  var params = new URLSearchParams();
+  if (game) params.set('g', g);
+  ['id', 'u'].forEach(function (k) { var v = q.get(k); if (v && UUID.test(v)) params.set(k, v); });
+  var code = q.get('c');
+  if (code && CODE.test(code)) { code = code.toUpperCase(); params.set('c', code); } else code = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  if (game) {
+    var isVisit = g === 'jardim' && params.get('id');
+    $('title').textContent = isVisit ? 'Visite o jardim do seu amigo' : (g === 'duelo' ? 'Você foi desafiado para um Duelo' : game[0]);
+    $('sub').textContent = game[1];
+    $('game-img').src = 'img/' + game[2] + '.png';
+    $('game-img').alt = game[0];
+    document.title = game[0] + ' · Convite ONDA';
+  }
+  if (code) { $('code').textContent = code; $('code-step').hidden = false; }
+
+  var ua = navigator.userAgent || '';
+  var android = /Android/i.test(ua);
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+  var query = params.toString();
+  var scheme = 'onda://jogo' + (query ? '?' + query : '');
+  // Android: an intent link opens the app if installed, otherwise falls back to the test opt-in page.
+  $('open').href = android
+    ? 'intent://jogo' + (query ? '?' + query : '') + '#Intent;scheme=onda;package=' + PACKAGE +
+      (ANDROID_URL ? ';S.browser_fallback_url=' + encodeURIComponent(ANDROID_URL) : '') + ';end'
+    : scheme;
+
+  var showIos = IOS_URL && !android, showAndroid = ANDROID_URL && !ios;
+  if (showIos) { $('ios').href = IOS_URL; $('ios').hidden = false; $('ios-note').hidden = false; }
+  if (showAndroid) { $('android').href = ANDROID_URL; $('android').hidden = false; $('android-note').hidden = false; }
+  if (!showIos && !showAndroid) $('no-link').hidden = false;
+  else if (ios && !IOS_URL) $('no-link').hidden = false;
+})();
+</script>
+</body>
+</html>
