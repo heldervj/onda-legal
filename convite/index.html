@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Convite para a ONDA</title>
+<meta name="description" content="Você foi convidado para a ONDA, a rede de fotos, memórias e jogos entre amigos. Só entra quem tem convite.">
+<meta property="og:title" content="Você foi convidado para a ONDA">
+<meta property="og:description" content="Fotos de hoje e de antigamente, um tema do dia e jogos com amigos. Só para convidados.">
+<meta property="og:image" content="https://heldervj.github.io/onda-legal/jogo/img/onda.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../jogo/img/onda.png">
+<style>
+  :root{--bg:#F6F9FD;--card:#fff;--text:#0F172A;--muted:#475569;--primary:#2563EB;--deep:#0B3B8C;--sky:#EAF4FF;--line:#E2E8F0}
+  @media(prefers-color-scheme:dark){:root{--bg:#0B1120;--card:#111a2e;--text:#E2E8F0;--muted:#94A3B8;--sky:#13213d;--line:#1e2a44}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  main{max-width:440px;margin:0 auto;padding:28px 18px 56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.04em;color:var(--primary)}
+  .brand img{width:32px;height:32px;border-radius:8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 20px;margin-top:20px;text-align:center}
+  h1{font-size:1.5rem;margin:6px 0 4px}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .label{font-size:.75rem;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+  .code{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:1.6rem;letter-spacing:.18em;background:var(--sky);color:var(--primary);padding:8px 14px;border-radius:12px;margin:6px 0 4px;user-select:all;-webkit-user-select:all}
+  .copy{background:none;border:0;color:var(--primary);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:6px}
+  .btn{display:block;width:100%;padding:14px 18px;border-radius:999px;background:var(--primary);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;border:0;margin-top:10px}
+  .btn:active{background:var(--deep)}
+  .btn.alt{background:var(--sky);color:var(--primary)}
+  .hint{color:var(--muted);font-size:.9rem;margin:10px 0 0}
+  h2{font-size:1.05rem;margin:28px 0 8px}
+  ol{padding-left:20px;margin:0}
+  li{margin:8px 0}
+  footer{margin-top:36px;font-size:.8rem;color:var(--muted);text-align:center}
+  footer a{color:var(--muted)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand"><img src="../jogo/img/onda.png" alt="">ONDA</div>
+
+  <section class="card">
+    <h1>Você foi convidado</h1>
+    <p class="sub">A ONDA é uma rede de fotos de hoje e de antigamente, com um tema do dia e jogos entre amigos. Só entra quem tem convite.</p>
+    <div id="code-box" hidden>
+      <div class="label">SEU CÓDIGO DE CONVITE</div>
+      <div class="code" id="code"></div><br>
+      <button class="copy" id="copy" type="button">Copiar código</button>
+    </div>
+    <a class="btn" id="open" href="onda://convite">Já tenho o app: abrir</a>
+  </section>
+
+  <h2>Como entrar</h2>
+  <ol>
+    <li>Instale a ONDA (botão abaixo).</li>
+    <li>Entre com seu e-mail. Você recebe um código de 6 dígitos para confirmar.</li>
+    <li id="step-code">Quando o app pedir o convite, digite o código acima, ou volte aqui e toque em <b>Já tenho o app: abrir</b> para ele ser preenchido sozinho.</li>
+  </ol>
+  <div>
+    <a class="btn alt" id="ios" hidden>Baixar na App Store</a>
+    <a class="btn alt" id="android" hidden>Instalar no Android (Google Play, teste fechado)</a>
+  </div>
+  <p class="hint" id="android-note" hidden>No Android a ONDA ainda está em teste fechado: entre com a conta Google que foi convidada, aceite o convite e instale pela Play Store.</p>
+  <p class="hint" id="no-link" hidden>Peça o link de instalação para quem te mandou este convite.</p>
+
+  <footer>
+    ONDA · <a href="../privacidade.html">Privacidade</a> · <a href="../termos.html">Termos</a>
+  </footer>
+</main>
+<script>
+(function () {
+  // Store links. IOS_URL is the App Store page (works once Apple approves the app; ascAppId 6839169687).
+  var IOS_URL = 'https://apps.apple.com/br/app/id6839169687';
+  var ANDROID_URL = 'https://play.google.com/apps/testing/com.apponda.socialapp';
+  var PACKAGE = 'com.apponda.socialapp';
+  var CODE = /^[A-Za-z2-9]{6,10}$/;
+  var $ = function (id) { return document.getElementById(id); };
+
+  var code = new URLSearchParams(location.search).get('c');
+  code = code && CODE.test(code) ? code.toUpperCase() : null;
+  var path = code ? 'convite/' + code : 'convite';
+  if (code) {
+    $('code').textContent = code;
+    $('code-box').hidden = false;
+    document.title = 'Convite ' + code + ' · ONDA';
+    $('copy').onclick = function () {
+      (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(
+        function () { $('copy').textContent = 'Copiado!'; },
+        function () { $('copy').textContent = 'Toque e segure o código para copiar'; });
+    };
+  } else {
+    $('step-code').textContent = 'Quando o app pedir o convite, digite o código que seu amigo te mandou.';
+  }
+
+  var ua = navigator.userAgent || '';
+  var android = /Android/i.test(ua);
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+  $('open').href = android
+    ? 'intent://' + path + '#Intent;scheme=onda;package=' + PACKAGE +
+      (ANDROID_URL ? ';S.browser_fallback_url=' + encodeURIComponent(ANDROID_URL) : '') + ';end'
+    : 'onda://' + path;
+
+  var showIos = IOS_URL && !android, showAndroid = ANDROID_URL && !ios;
+  if (showIos) { $('ios').href = IOS_URL; $('ios').hidden = false; }
+  if (showAndroid) { $('android').href = ANDROID_URL; $('android').hidden = false; $('android-note').hidden = false; }
+  if (!showIos && !showAndroid) $('no-link').hidden = false;
+})();
+</script>
+</body>
+</html>

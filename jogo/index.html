@@ -51,15 +51,15 @@
 
   <h2>Ainda não tem o app?</h2>
   <ol>
-    <li>Instale a versão de testes da ONDA no seu celular (links abaixo).</li>
+    <li>Instale a ONDA no seu celular (links abaixo).</li>
     <li id="code-step" hidden>Ao criar sua conta, use o código de convite <span class="code" id="code"></span></li>
     <li>Volte para este link e toque em <b>Abrir no app</b>.</li>
   </ol>
   <div class="stores">
-    <a class="btn alt" id="ios" hidden>Instalar no iPhone (TestFlight)</a>
+    <a class="btn alt" id="ios" hidden>Baixar na App Store</a>
     <a class="btn alt" id="android" hidden>Instalar no Android (Google Play)</a>
   </div>
-  <p class="hint" id="ios-note" hidden>No iPhone, primeiro instale o app <b>TestFlight</b> da Apple; o link acima abre o convite da ONDA dentro dele.</p>
+  <p class="hint" id="ios-note" hidden>A ONDA é só para convidados: ao criar sua conta, use o código de convite acima.</p>
   <p class="hint" id="android-note" hidden>No Android, entre com a mesma conta Google que foi convidada para o teste, aceite o convite e instale pela Play Store.</p>
   <p class="hint" id="no-link" hidden>A ONDA ainda está em teste fechado. Peça o link de instalação para quem te mandou este convite.</p>
 
@@ -70,7 +70,7 @@
 <script>
 (function () {
   // Install links for the test builds. Empty = not public yet (the page then asks for the link).
-  var IOS_URL = '';
+  var IOS_URL = 'https://apps.apple.com/br/app/id6839169687'; // App Store (live once Apple approves)
   var ANDROID_URL = 'https://play.google.com/apps/testing/com.apponda.socialapp';
   var PACKAGE = 'com.apponda.socialapp';
 
